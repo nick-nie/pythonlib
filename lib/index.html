@@ -1,0 +1,18 @@
+<html>
+        <head>
+                <title>URL Extractor</title>
+        </head>
+        <body>
+				<H3>URL Extractor</H3>
+				<form action="http://localhost:8000/cgi-bin/extractor.py" method="GET">
+				  Protocol:<br><input type="text" name="protocol"><br>
+				  Host:<br><input type="text" name="host"><br>
+				  Port:<br><input type="radio" name="port" value='9002'>9002<br>
+				  <input type="radio" name="port" value='9102'>9102<br>
+				  Pattern:<br><input type="text" name="pattern"><br>
+				  Dir:<br><input type="text" name="dir"><br>
+				  File:<br><input type="text" name="file"><br>
+				  <input type="submit" value="Submit">
+				</form>
+        </body>
+</html>
