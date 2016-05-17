@@ -16,7 +16,6 @@ pattern = form['pattern'].value
 dir = form['dir'].value
 file = form['file'].value
 
-# pattern = '/store/powertools/en/USD/Open-Catalogue/'
 url = str(protocol + '://' + host + ':' + port + dir) # write the url here
 print 
 gcontext = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
