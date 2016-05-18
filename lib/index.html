@@ -5,13 +5,15 @@
         <body>
 				<H3>URL Extractor</H3>
 				<form action="http://localhost:8000/cgi-bin/extractor.py" method="GET">
-				  Protocol:<br><input type="text" name="protocol"><br>
-				  Host:<br><input type="text" name="host"><br>
+				  Protocol:<br><input type="text" name="protocol" style="width: 400px;"><br>
+				  Host:<br><input type="text" name="host" style="width: 400px;"><br>
 				  Port:<br><input type="radio" name="port" value='9002'>9002<br>
 				  <input type="radio" name="port" value='9102'>9102<br>
-				  Pattern:<br><input type="text" name="pattern"><br>
-				  Dir:<br><input type="text" name="dir"><br>
-				  File:<br><input type="text" name="file"><br>
+				  <input type="radio" name="port" value='9102'>80<br>
+				  Filter:<br><input type="radio" name="filter" value='Open-Catalogue'>Open-Catalogue<br>
+				  <input type="radio" name="filter" value='/store/en/'>/store/en/<br>
+				  URI:<br><input type="text" name="uri" style="width: 400px;"><br>
+				  File:<br><input type="text" name="file" style="width: 400px;"><br>
 				  <input type="submit" value="Submit">
 				</form>
         </body>
