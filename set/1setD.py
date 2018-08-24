@@ -16,3 +16,4 @@ set2.update({90,12},{14,34},{'hi','zero'},{'one'})
 print set1
 print set2
 print set0
+print 'this is set demp py program'
