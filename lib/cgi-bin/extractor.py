@@ -3,12 +3,12 @@
 
 import cgi
 from bs4 import BeautifulSoup
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import ssl
 
-print 'Content-type: text/html\n\n'
-print '<H3>URL Extractor</H3>'
-print 
+print('Content-type: text/html\n\n')
+print('<H3>URL Extractor</H3>')
+print() 
 form = cgi.FieldStorage()
 
 protocol = form['protocol'].value
@@ -24,7 +24,7 @@ urls = []
 # funciton to parse url
 def html_parser(url):
     gcontext = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
-    usock = urllib2.urlopen(url, context = gcontext)
+    usock = urllib.request.urlopen(url, context = gcontext)
     data = usock.read()
     usock.close()
     soup = BeautifulSoup(data, 'html.parser')
@@ -65,8 +65,8 @@ for i in range(len(nav_urls)):
 # meger and remove duplicated urls
 urls = remove_duplicate(values = nav_urls + PDP_urls)
 for n in range(len(urls)):
-    print '<h5>%s</h5>' % urls[n]
-print '<h3>Total : %d</h3>' % n
+    print('<h5>%s</h5>' % urls[n])
+print('<h3>Total : %d</h3>' % n)
 
 # extract urls from PDP
 
@@ -77,6 +77,6 @@ with open (str(file), 'wt') as wf:
     for url in urls:
         wf.write(url + '\n')
     wf.close()
-print '<h3>%s generated! </h3>' % str(file)
+print('<h3>%s generated! </h3>' % str(file))
 
 

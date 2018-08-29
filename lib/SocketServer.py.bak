@@ -206,9 +206,9 @@ class BaseServer:
 
     def __init__(self, server_address, RequestHandlerClass):
         """Constructor.  May be extended, do not override."""
-        print('<Trace> from SocketServer.py -> BaseServer -> __init__()')
+        print '<Trace> from SocketServer.py -> BaseServer -> __init__()'
         self.server_address = server_address
-        print('<Trace> from SocketServer.py -> BaseServer -> __init__() -> server_address' + str(server_address))
+        print '<Trace> from SocketServer.py -> BaseServer -> __init__() -> server_address' + str(server_address)
         self.RequestHandlerClass = RequestHandlerClass
         self.__is_shut_down = threading.Event()
         self.__shutdown_request = False
@@ -228,7 +228,7 @@ class BaseServer:
         self.timeout. If you need to do periodic tasks, do them in
         another thread.
         """
-        print('<Trace> from SocketServer.py -> BaseServer -> serve_forever()')
+        print '<Trace> from SocketServer.py -> BaseServer -> serve_forever()'
         self.__is_shut_down.clear()
         try:
             while not self.__shutdown_request:
@@ -291,12 +291,12 @@ class BaseServer:
         readable before this function was called, so there should be
         no risk of blocking in get_request().
         """
-        print('<Trace> from SocketServer.py -> BaseServer -> _handle_request_noblock()')
+        print '<Trace> from SocketServer.py -> BaseServer -> _handle_request_noblock()'
         try:
             request, client_address = self.get_request()
-            print(type(request))
+            print type(request)
             for e in enumerate(dir(request)):
-                print(e)
+                print e
         except socket.error:
             return
         if self.verify_request(request, client_address):
@@ -356,12 +356,12 @@ class BaseServer:
         The default is to print a traceback and continue.
 
         """
-        print('-'*40)
-        print('Exception happened during processing of request from', end=' ')
-        print(client_address)
+        print '-'*40
+        print 'Exception happened during processing of request from',
+        print client_address
         import traceback
         traceback.print_exc() # XXX But this goes to stderr!
-        print('-'*40)
+        print '-'*40
 
 
 class TCPServer(BaseServer):
@@ -421,7 +421,7 @@ class TCPServer(BaseServer):
 
     def __init__(self, server_address, RequestHandlerClass, bind_and_activate=True):
         """Constructor.  May be extended, do not override."""
-        print('<Trace> from SocketServer.py -> TCPServer class -> __init__()')
+        print '<Trace> from SocketServer.py -> TCPServer class -> __init__()'
         BaseServer.__init__(self, server_address, RequestHandlerClass)
         self.socket = socket.socket(self.address_family,
                                     self.socket_type)
@@ -443,7 +443,7 @@ class TCPServer(BaseServer):
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.socket.bind(self.server_address)
         self.server_address = self.socket.getsockname()
-        print('<Trace> from SocketServer.py -> TCPServer class -> server_bind()')
+        print '<Trace> from SocketServer.py -> TCPServer class -> server_bind()'
 
     def server_activate(self):
         """Called by constructor to activate the server.
@@ -452,7 +452,7 @@ class TCPServer(BaseServer):
 
         """
         self.socket.listen(self.request_queue_size)
-        print('<Trace> from SocketServer.py -> TCPServer class -> server_activate()')
+        print '<Trace> from SocketServer.py -> TCPServer class -> server_activate()'
 
     def server_close(self):
         """Called to clean-up the server.
@@ -477,7 +477,7 @@ class TCPServer(BaseServer):
 
         """
         return self.socket.accept()
-        print(' from SocketServer.py -> TCPServer class -> get_request()')
+        print ' from SocketServer.py -> TCPServer class -> get_request()'
 
     def shutdown_request(self, request):
         """Called to shutdown and close an individual request."""
@@ -739,9 +739,9 @@ class DatagramRequestHandler(BaseRequestHandler):
 
     def setup(self):
         try:
-            from io import StringIO
+            from cStringIO import StringIO
         except ImportError:
-            from io import StringIO
+            from StringIO import StringIO
         self.packet, self.socket = self.request
         self.rfile = StringIO(self.packet)
         self.wfile = StringIO()

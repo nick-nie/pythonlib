@@ -25,14 +25,14 @@ __all__ = ["CGIHTTPRequestHandler"]
 
 import os
 import sys
-import urllib.request, urllib.parse, urllib.error
-import http.server
-import http.server
+import urllib
+import BaseHTTPServer
+import SimpleHTTPServer
 import select
 import copy
 
 
-class CGIHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
+class CGIHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
     """Complete HTTP server with GET, HEAD and POST commands.
 
@@ -68,7 +68,7 @@ class CGIHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         if self.is_cgi():
             return self.run_cgi()
         else:
-            return http.server.SimpleHTTPRequestHandler.send_head(self)
+            return SimpleHTTPServer.SimpleHTTPRequestHandler.send_head(self)
 
     def is_cgi(self):
         """Test whether self.path corresponds to a CGI script.
@@ -84,7 +84,7 @@ class CGIHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         path begins with one of the strings in self.cgi_directories
         (and the next character is a '/' or the end of the string).
         """
-        collapsed_path = _url_collapse_path(urllib.parse.unquote(self.path))
+        collapsed_path = _url_collapse_path(urllib.unquote(self.path))
         dir_sep = collapsed_path.find('/', 1)
         head, tail = collapsed_path[:dir_sep], collapsed_path[dir_sep+1:]
         if head in self.cgi_directories:
@@ -163,7 +163,7 @@ class CGIHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         env['SERVER_PROTOCOL'] = self.protocol_version
         env['SERVER_PORT'] = str(self.server.server_port)
         env['REQUEST_METHOD'] = self.command
-        uqrest = urllib.parse.unquote(rest)
+        uqrest = urllib.unquote(rest)
         env['PATH_INFO'] = uqrest
         env['PATH_TRANSLATED'] = self.translate_path(uqrest)
         env['SCRIPT_NAME'] = scriptname
@@ -209,7 +209,7 @@ class CGIHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         ua = self.headers.getheader('user-agent')
         if ua:
             env['HTTP_USER_AGENT'] = ua
-        co = [_f for _f in self.headers.getheaders('cookie') if _f]
+        co = filter(None, self.headers.getheaders('cookie'))
         if co:
             env['HTTP_COOKIE'] = ', '.join(co)
         # XXX Other HTTP_* headers
@@ -355,7 +355,7 @@ def nobody_uid():
     try:
         nobody = pwd.getpwnam('nobody')[2]
     except KeyError:
-        nobody = 1 + max([x[2] for x in pwd.getpwall()])
+        nobody = 1 + max(map(lambda x: x[2], pwd.getpwall()))
     return nobody
 
 
@@ -365,12 +365,12 @@ def executable(path):
         st = os.stat(path)
     except os.error:
         return False
-    return st.st_mode & 0o111 != 0
+    return st.st_mode & 0111 != 0
 
 
 def test(HandlerClass = CGIHTTPRequestHandler,
-         ServerClass = http.server.HTTPServer):
-    http.server.test(HandlerClass, ServerClass)
+         ServerClass = BaseHTTPServer.HTTPServer):
+    SimpleHTTPServer.test(HandlerClass, ServerClass)
 
 
 if __name__ == '__main__':
